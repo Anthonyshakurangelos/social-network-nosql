@@ -1,45 +1,68 @@
 const { Schema, model } = require('mongoose');
 
-// Schema to create a course model
 const thoughtSchema = new Schema(
   {
     thoughtText: {
       type: String,
       required: true,
-      max_length: 280,
-      min_length: 1,
+      minlength: 1,
+      maxlength: 280,
     },
-    username: {
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (timestamp) => dateFormat(timestamp).format(dd/mm/yy),
+    },
+    userName: {
       type: String,
       required: true,
     },
-    // startDate: {
-        //   type: Date,
-        //   default: Date.now(),
-        // },
-        createAt: {
-            type: Date,
-            default: Date.now,
-            // Sets a default value of 12 weeks from now
-            //   default: () => new Date(+new Date() + 84 * 24 * 60 * 60 * 1000),
-            
-        },
-        users: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'User',
-            },
-        ],
-        reactions: [reactionSchema],
-    },
+    reactions: [reactionSchema],
+  },
   {
     toJSON: {
       virtuals: true,
+      getters: true,
     },
     id: false,
   }
 );
 
-const Thought = model('thought', thoughtSchema);
+// Schema to create a Reactions model
+const reactionSchema = new Schema(
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      maxlength: 280,
+    },
+    userName: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (timestamp) => dateFormat(timestamp).format(dd/mm/yy),
+    },
+  },
+  {
+    toJSON: {
+      virtuals: true,
+      getters: true,
+    },
+    id: false,
+  }
+);
+
+ThoughtSchema.virtual('reactionCount').get(function () {
+  return this.reactions.length;
+});
+
+const Thought = model('Thought', thoughtSchema);
 
 module.exports = Thought;
