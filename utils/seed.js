@@ -19,34 +19,34 @@ connection.once('open', async () => {
   // Loop 20 times -- add students to the students array
   for (let i = 0; i < 20; i++) {
     // Get some random assignment objects using a helper function that we imported from ./data
-    
-    // const assignments = getRandomAssignments(20);
+
+    const thoughts = getRandomThoughts(20);
 
     const fullName = getRandomName();
     const first = fullName.split(' ')[0];
-    const last = fullName.split(' ')[1];
+    const friends = fullName.split(' ')[1];
     const github = `${first}${Math.floor(Math.random() * (99 - 18 + 1) + 18)}`;
 
-    students.push({
-      first,
-      last,
-      github,
-      assignments,
+    users.push({
+      username,
+      email,
+      friends,
+      thoughts,
     });
   }
 
   // Add students to the collection and await the results
-  await Student.collection.insertMany(students);
+  await User.collection.insertMany(users);
 
   // Add courses to the collection and await the results
-  await Course.collection.insertOne({
-    courseName: 'UCLA',
+  await Thought.collection.insertOne({
+    thoughtText: '',
     inPerson: false,
-    students: [...students],
+    users: [...users],
   });
 
   // Log out the seed data to indicate what should appear in the database
-  console.table(students);
-  console.info('Seeding complete! 🌱');
+  console.table(users);
+  console.info('Seeding completed');
   process.exit(0);
 });

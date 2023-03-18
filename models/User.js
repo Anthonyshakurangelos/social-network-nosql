@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongoose').Types;
 const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema(
@@ -6,22 +7,22 @@ const userSchema = new Schema(
       type: String,
       unique: true,
       trim: true,
-      required: 'User name is required',
+      required: 'username is required',
     },
     email: {
       type: String,
-      required: 'Email address is required',
+      required: 'email address is required',
       unique: true,
       match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please use a valid email address'],
     },
     thoughts:[ {
       type: Schema.Types.ObjectID,
-      ref: 'Thought',
+      ref: 'thoughts',
       },
      ],
      friends:[ {
       type: Schema.Types.ObjectID,
-      ref: 'User',
+      ref: 'friends',
       },
      ],
   },
@@ -33,7 +34,7 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.virtuals('friendCount').get(function(){
+userSchema.virtual('friendCount').get(function(){
   return this.friends.length;
 })
 
