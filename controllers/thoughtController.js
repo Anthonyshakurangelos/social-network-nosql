@@ -13,6 +13,7 @@ module.exports = {
         res.sendStatus(400);
       });
   },
+  
   // Get a single thought
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.id })
@@ -28,6 +29,7 @@ module.exports = {
         res.sendStatus(400);
       });
   },
+
   // Create a thought
 
   createThought({ body }, res) {
@@ -73,6 +75,7 @@ module.exports = {
       })
       .catch(err => res.json(err));
   },
+
 //  creates reaction
 createReaction({params}, res) {
   Thought.findOneAndUpdate({ _id: params.id })
@@ -98,6 +101,7 @@ createReaction({params}, res) {
     })
     .catch(err => res.json(err));
 },
+
 //  deletes reaction
   deleteReaction({ params }, res) {
     Thought.findOneAndUpdate(
